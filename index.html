@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nimbus — Work Smarter, Not Harder</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --bg-alt: #10161d;
+    --card: #131a22;
+    --border: #232c36;
+    --text: #eef2f6;
+    --text-dim: #9aa7b4;
+    --accent: #5b8cff;
+    --accent-2: #7ee6c0;
+    --radius: 14px;
+    --max-width: 1120px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11, 15, 20, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: inline-block;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #7a5bff);
+    color: #fff;
+  }
+
+  .btn-ghost {
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 100px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(91,140,255,0.25) 0%, rgba(91,140,255,0) 70%);
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--accent-2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    max-width: 780px;
+    margin: 0 auto 20px;
+    position: relative;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero p {
+    max-width: 560px;
+    margin: 0 auto 36px;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    position: relative;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  .btn-lg { padding: 14px 28px; font-size: 1rem; }
+
+  .hero-note {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 12px;
+  }
+
+  .hero-image {
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--card), var(--bg-alt));
+    padding: 8px;
+    position: relative;
+  }
+
+  .hero-image-inner {
+    border-radius: 8px;
+    background: var(--bg-alt);
+    height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    border: 1px dashed var(--border);
+  }
+
+  /* Logos */
+  .logos {
+    padding: 48px 24px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logos-label {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 28px;
+  }
+
+  .logos-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .logo-chip {
+    color: var(--text-dim);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    opacity: 0.7;
+  }
+
+  /* Sections */
+  section { padding: 90px 24px; }
+
+  .section-head {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 56px;
+  }
+
+  .eyebrow {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .section-head h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  .section-head p { color: var(--text-dim); }
+
+  /* Features grid */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .feature-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+  }
+
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(91,140,255,0.2), rgba(126,230,192,0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+  }
+
+  .feature-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+  .feature-card p { color: var(--text-dim); font-size: 0.95rem; }
+
+  /* How it works */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    counter-reset: step;
+  }
+
+  .step {
+    position: relative;
+    padding-left: 8px;
+  }
+
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    color: var(--accent-2);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .step h3 { margin-bottom: 8px; font-size: 1.05rem; }
+  .step p { color: var(--text-dim); font-size: 0.95rem; }
+
+  /* Pricing */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    align-items: stretch;
+  }
+
+  .price-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .price-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(91,140,255,0.08), var(--card));
+    position: relative;
+  }
+
+  .price-tag {
+    position: absolute;
+    top: -12px;
+    right: 24px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .price-card h3 { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 8px; }
+
+  .price-amount {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .price-amount span { font-size: 1rem; color: var(--text-dim); font-weight: 500; }
+
+  .price-desc { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 24px; }
+
+  .price-features {
+    list-style: none;
+    margin-bottom: 28px;
+    flex-grow: 1;
+  }
+
+  .price-features li {
+    padding: 8px 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .price-features li:last-child { border-bottom: none; }
+
+  .check { color: var(--accent-2); font-weight: 700; }
+
+  .price-card .btn { text-align: center; width: 100%; }
+
+  /* Testimonial */
+  .testimonial {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .testimonial blockquote {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  }
+
+  .testimonial-author div { text-align: left; }
+  .testimonial-author strong { display: block; font-size: 0.95rem; }
+  .testimonial-author span { color: var(--text-dim); font-size: 0.85rem; }
+
+  /* CTA banner */
+  .cta-banner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(91,140,255,0.15), rgba(126,230,192,0.1));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 64px 32px;
+    text-align: center;
+  }
+
+  .cta-banner h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+  }
+
+  .cta-banner p {
+    color: var(--text-dim);
+    margin-bottom: 30px;
+  }
+
+  /* FAQ */
+  .faq-list {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-item summary::-webkit-details-marker { display: none; }
+
+  .faq-item summary::after {
+    content: "+";
+    font-size: 1.4rem;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+
+  .faq-item p {
+    color: var(--text-dim);
+    margin-top: 12px;
+    font-size: 0.95rem;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 56px 24px 32px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+    max-width: var(--max-width);
+    margin: 0 auto 40px;
+  }
+
+  .footer-brand p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-top: 12px;
+    max-width: 260px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col li { margin-bottom: 10px; }
+
+  .footer-col a {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+
+  .footer-col a:hover { color: var(--text); }
+
+  .footer-bottom {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--card);
+    border: 1px solid var(--accent);
+    color: var(--text);
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 200;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Responsive */
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .menu-toggle { display: block; }
+    .features-grid, .steps, .pricing-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .nav-cta .btn-ghost { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav container">
+    <a class="logo" href="#top"><span class="logo-dot"></span>Nimbus</a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#" onclick="return false;">Log in</a>
+      <a class="btn btn-primary" href="#signup" id="navSignup">Get started</a>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="badge">✨ Now with AI-powered automation</div>
+    <h1>Run your whole team from <span>one calm workspace</span></h1>
+    <p>Nimbus brings tasks, docs, and conversations together so your team spends less time switching tabs and more time shipping work.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary btn-lg" href="#signup" id="heroSignup">Start free trial</a>
+      <a class="btn btn-ghost btn-lg" href="#how">See how it works</a>
+    </div>
+    <p class="hero-note">No credit card required · Free 14-day trial</p>
+    <div class="hero-image">
+      <div class="hero-image-inner">Product preview goes here</div>
+    </div>
+  </section>
+
+  <section class="logos">
+    <p class="logos-label">Trusted by teams at</p>
+    <div class="logos-row">
+      <span class="logo-chip">Acme Co.</span>
+      <span class="logo-chip">Bramble</span>
+      <span class="logo-chip">Northwind</span>
+      <span class="logo-chip">Vertex</span>
+      <span class="logo-chip">Halcyon</span>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="section-head">
+      <div class="eyebrow">Features</div>
+      <h2>Everything your team needs, nothing it doesn't</h2>
+      <p>Built for speed and focus, so your team can stay in flow instead of managing tools.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Lightning-fast tasks</h3>
+        <p>Create, assign, and track work in seconds with keyboard-first shortcuts.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>Everything connected</h3>
+        <p>Docs, chats, and tasks live side by side, so context is never more than a click away.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>Smart automation</h3>
+        <p>Let Nimbus handle repetitive busywork like status updates and reminders.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Real-time insights</h3>
+        <p>See how work is progressing across teams with live dashboards, not stale reports.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Enterprise-grade security</h3>
+        <p>SSO, audit logs, and granular permissions keep your data safe by default.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧩</div>
+        <h3>Works with your stack</h3>
+        <p>Native integrations with the tools your team already uses every day.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Get your team up and running in minutes</h2>
+      <p>No lengthy onboarding. No IT ticket required.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Create your workspace</h3>
+        <p>Sign up and invite your team — no setup calls needed.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Import your work</h3>
+        <p>Bring in tasks and docs from your existing tools in one click.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Start shipping</h3>
+        <p>Assign work, track progress, and keep everyone aligned automatically.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="section-head">
+      <div class="eyebrow">Pricing</div>
+      <h2>Simple pricing that scales with you</h2>
+      <p>Start free. Upgrade when your team grows.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Starter</h3>
+        <div class="price-amount">$0<span>/mo</span></div>
+        <p class="price-desc">For individuals getting organized.</p>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Up to 3 projects</li>
+          <li><span class="check">✓</span> Basic automation</li>
+          <li><span class="check">✓</span> Community support</li>
+        </ul>
+        <a class="btn btn-ghost" href="#signup">Get started</a>
+      </div>
+      <div class="price-card featured">
+        <span class="price-tag">Most popular</span>
+        <h3>Team</h3>
+        <div class="price-amount">$12<span>/user/mo</span></div>
+        <p class="price-desc">For growing teams that need more power.</p>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Unlimited projects</li>
+          <li><span class="check">✓</span> Advanced automation</li>
+          <li><span class="check">✓</span> Priority support</li>
+          <li><span class="check">✓</span> Integrations included</li>
+        </ul>
+        <a class="btn btn-primary" href="#signup">Start free trial</a>
+      </div>
+      <div class="price-card">
+        <h3>Enterprise</h3>
+        <div class="price-amount">Custom</div>
+        <p class="price-desc">For organizations with advanced needs.</p>
+        <ul class="price-features">
+          <li><span class="check">✓</span> SSO & SCIM</li>
+          <li><span class="check">✓</span> Dedicated support</li>
+          <li><span class="check">✓</span> Custom contracts</li>
+        </ul>
+        <a class="btn btn-ghost" href="#signup">Contact sales</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="testimonial">
+      <blockquote>"Nimbus cut our weekly status meetings in half. Everything we need is just already there."</blockquote>
+      <div class="testimonial-author">
+        <div class="avatar"></div>
+        <div>
+          <strong>Jordan Lee</strong>
+          <span>Head of Ops, Bramble</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="signup">
+    <div class="cta-banner">
+      <h2>Ready to simplify how your team works?</h2>
+      <p>Join thousands of teams already working smarter with Nimbus.</p>
+      <form id="signupForm" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <input type="email" required placeholder="you@company.com" style="padding:14px 16px; border-radius:8px; border:1px solid var(--border); background:var(--bg-alt); color:var(--text); min-width:260px; font-size:0.95rem;">
+        <button type="submit" class="btn btn-primary btn-lg">Start free trial</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="section-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Is there a free trial?</summary>
+        <p>Yes — every plan includes a free 14-day trial, no credit card required.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I cancel anytime?</summary>
+        <p>Absolutely. You can cancel or change your plan at any time from your account settings.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you offer discounts for nonprofits?</summary>
+        <p>Yes, we offer 30% off for registered nonprofits and educational institutions.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What kind of support do you provide?</summary>
+        <p>All plans include email support, with priority live chat support on Team and Enterprise plans.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="#top"><span class="logo-dot"></span>Nimbus</a>
+      <p>The calm, connected workspace for modern teams.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#" onclick="return false;">About</a></li>
+        <li><a href="#" onclick="return false;">Careers</a></li>
+        <li><a href="#" onclick="return false;">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#" onclick="return false;">Privacy</a></li>
+        <li><a href="#" onclick="return false;">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Nimbus, Inc. All rights reserved.</span>
+    <span>Made with care for teams everywhere.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Thanks! Check your inbox to confirm your trial.</div>
+
+<script>
+  document.getElementById('signupForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function () { toast.classList.remove('show'); }, 3500);
+    this.reset();
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = this.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
