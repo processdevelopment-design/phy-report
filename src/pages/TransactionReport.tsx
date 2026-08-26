@@ -6,8 +6,10 @@ import { TransactionSummary } from '../components/transactions/TransactionSummar
 import { TransactionTable } from '../components/transactions/TransactionTable';
 import { useAuth } from '../hooks/useAuth';
 import { useTransactions } from '../hooks/useTransactions';
+import { auditService } from '../services/auditService';
 import { transactionsToCsv, downloadCsv } from '../utils/csv';
 import { exportTimestamp } from '../utils/date';
+import { TRANSACTION_COLUMNS } from '../constants/app';
 
 export function TransactionReport() {
   const { profile, signOut } = useAuth();
@@ -34,8 +36,17 @@ export function TransactionReport() {
     const allRows = await exportCsv();
     if (!allRows) return;
     const csv = transactionsToCsv(allRows);
-    downloadCsv(`PULSE_Transaction_Report_${exportTimestamp()}.csv`, csv);
-  }, [exportCsv]);
+    const filename = `PULSE_Transaction_Report_${exportTimestamp()}.csv`;
+    downloadCsv(filename, csv);
+
+    // Fire-and-forget: logging never blocks or affects the download itself.
+    auditService.logDownload(
+      filters,
+      allRows.length,
+      filename,
+      TRANSACTION_COLUMNS.map((c) => c.label),
+    );
+  }, [exportCsv, filters]);
 
   return (
     <div className="min-h-screen bg-slate-50">
